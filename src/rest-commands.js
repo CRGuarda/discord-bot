@@ -1,7 +1,7 @@
 import 'dotenv/config'
 import { REST, Routes, ApplicationCommandOptionType } from 'discord.js'
 
-const TOKEN = process.env.DISCORD_TOKEN
+const DISCORD_TOKEN = process.env.DISCORD_TOKEN
 const CLIENT_ID = process.env.CLIENT_ID
 
 const commands = [
@@ -19,7 +19,7 @@ const commands = [
   },
 ]
 
-const rest = new REST({ version: '10' }).setToken(TOKEN)
+const rest = new REST({ version: '10' }).setToken(DISCORD_TOKEN)
 
 try {
   console.log('Started refreshing application (/) commands.')

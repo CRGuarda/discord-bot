@@ -1,7 +1,7 @@
 import 'dotenv/config'
 import { Client, GatewayIntentBits } from 'discord.js'
 
-const TOKEN = process.env.DISCORD_TOKEN
+const DISCORD_TOKEN = process.env.DISCORD_TOKEN
 let count = 0
 
 const client = new Client({
@@ -35,4 +35,4 @@ client.on('interactionCreate', (interaction) => {
 //   }
 // })
 
-client.login(TOKEN)
+client.login(DISCORD_TOKEN)
