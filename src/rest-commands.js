@@ -17,6 +17,23 @@ const commands = [
       },
     ],
   },
+  {
+    name: 'create',
+    description: 'Create a count for a user',
+    options: [
+      {
+        name: 'user',
+        description: 'Pick a user to create the count',
+        type: ApplicationCommandOptionType.Mentionable,
+        required: true,
+      },
+      {
+        name: 'count',
+        description: 'Set first value (0 if not provided)',
+        type: ApplicationCommandOptionType.Integer,
+      },
+    ],
+  },
 ]
 
 const rest = new REST({ version: '10' }).setToken(DISCORD_TOKEN)
