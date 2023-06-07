@@ -1,7 +1,7 @@
 import { EmbedBuilder } from 'discord.js'
 
 export default async (interaction) => {
-  const user = interaction.options.get('user').user
+  const { user } = interaction.options.get('user')
 
   try {
     await interaction.deferReply()
@@ -14,9 +14,7 @@ export default async (interaction) => {
         text: `Requested by ${interaction.user.username}`,
         iconURL: interaction.user.displayAvatarURL(),
       })
-    return interaction.editReply({
-      embeds: [embed],
-    })
+    return interaction.editReply({ content: user.toString(), embeds: [embed] })
   } catch (error) {
     return interaction.editReply('*Error happened*')
   }
