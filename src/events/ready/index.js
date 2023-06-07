@@ -1,4 +1,4 @@
-import { upsertCommands } from '../commands/rest-commands.js'
+import { upsertCommands } from '../../commands/rest-commands.js'
 
 export default ({ DISCORD_TOKEN, CLIENT_ID }) =>
   async (client) => {

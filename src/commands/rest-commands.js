@@ -13,6 +13,10 @@ export const areSameCommandsTrigger = async ({ client, commands: localCommands }
 
     if (serverCommandsArray.length !== localCommands.length) return false
 
+    // console.log(JSON.stringify(serverCommandsArray))
+    // console.log('///////////////////////////////////////////////')
+    // console.log(JSON.stringify(localCommands))
+
     return JSON.stringify(serverCommandsArray) === JSON.stringify(localCommands)
   } catch (error) {
     console.log(error)
@@ -48,6 +52,23 @@ const commands = [
         name: 'count',
         description: 'Set first value (0 if not provided)',
         required: false,
+      },
+    ],
+  },
+  {
+    name: 'secret',
+    description: 'This command do NOTHING. Really... nothing.',
+    options: [],
+  },
+  {
+    name: 'profile',
+    description: 'Return a profile card for the user choosed.',
+    options: [
+      {
+        type: ApplicationCommandOptionType.Mentionable,
+        name: 'user',
+        description: 'Choose user',
+        required: true,
       },
     ],
   },
