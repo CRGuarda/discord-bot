@@ -30,9 +30,25 @@ const commands = [
     description: 'Increment the count',
     options: [
       {
+        type: ApplicationCommandOptionType.String,
+        name: 'type',
+        description: 'What type of counter',
+        required: true,
+        choices: [
+          {
+            name: 'fucked',
+            value: 'fucked_counter',
+          },
+          {
+            name: 'flash',
+            value: 'flash_counter',
+          },
+        ],
+      },
+      {
         type: ApplicationCommandOptionType.Mentionable,
         name: 'user',
-        description: 'Pick a user to increment the count',
+        description: 'What user',
         required: true,
       },
     ],
