@@ -15,7 +15,7 @@ export default async (interaction) => {
           db.close(closeHelper)
           return interaction.editReply(`Not user found. Try \`/create @${user.username}\` or choose another user.`)
         }
-        console.log(row.fucked_counter)
+        // console.log(row.fucked_counter)
         const embed = new EmbedBuilder()
           .setTitle(`Profile of ${user.username}`)
           .addFields({ name: 'Fucked count', value: row.fucked_counter + '', inline: true })

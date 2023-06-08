@@ -24,7 +24,7 @@ export default (interaction) => {
         }
         return db.get(`SELECT * FROM users WHERE id = ${user.id}`, (err, row) => {
           db.close(closeHelper)
-          console.log(row)
+          // console.log(row)
           const reply =
             type === 'fucked_counter'
               ? `${user.toString()} la ha cagado ${row?.[type]} vez/veces.`

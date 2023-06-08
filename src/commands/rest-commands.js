@@ -65,8 +65,14 @@ const commands = [
       },
       {
         type: ApplicationCommandOptionType.Integer,
-        name: 'count',
-        description: 'Set first value (0 if not provided)',
+        name: 'fucked_count',
+        description: 'Set fucked value (0 if not provided)',
+        required: false,
+      },
+      {
+        type: ApplicationCommandOptionType.Integer,
+        name: 'flash_count',
+        description: 'Set flash value (0 if not provided)',
         required: false,
       },
     ],
