@@ -1,6 +1,7 @@
-import { closeHelper, conn, connHelper } from '../../db/dbConn.js'
+import { close_conn, start_conn } from '../../db/dbConn.js'
+import { User } from '../../db/schemas/user.js'
 
-export default (interaction) => {
+export default async (interaction) => {
   const { user } = interaction.options.get('user')
   const type = interaction.options.get('type').value
   // console.log(type)
@@ -8,30 +9,34 @@ export default (interaction) => {
   // return interaction.reply('hola')
   // console.log(user.displayAvatarURL()) //To retrieve user Avatar URL type: webp
 
-  const db = new conn('./db.sqlite', connHelper)
+  try {
+    await interaction.deferReply()
+    await start_conn()
 
-  db.serialize(() => {
-    return db.get(`SELECT id FROM users WHERE id = ${user.id}`, (err, row) => {
-      if (!row) {
-        db.close(closeHelper)
-        return interaction.reply(`Not user found. Try \`/create\` instead.`)
+    const userUpdated = await User.findOneAndUpdate(
+      {
+        user_id: user.id,
+      },
+      {
+        $inc: { [type]: 1 },
+      },
+      {
+        returnDocument: 'after',
       }
-      return db.run(`UPDATE users SET ${type} = ${type} + 1 WHERE id = ${user.id}`, (err) => {
-        if (err) {
-          // console.log({ row })
-          db.close(closeHelper)
-          return interaction.reply(`${err.message}`)
-        }
-        return db.get(`SELECT * FROM users WHERE id = ${user.id}`, (err, row) => {
-          db.close(closeHelper)
-          // console.log(row)
-          const reply =
-            type === 'fucked_counter'
-              ? `${user.toString()} la ha cagado ${row?.[type]} vez/veces.`
-              : `${user.toString()} flasheó a sus timos ${row?.[type]} vez/veces.`
-          return interaction.reply(reply)
-        })
-      })
-    })
-  })
+    )
+
+    if (!userUpdated) {
+      return interaction.editReply(`User doesn't exist. Try \`/create\` instead`)
+    }
+
+    return interaction.editReply(
+      `${user.toString()} la ha cagado ${userUpdated.screwed_up_count} veces y flasheado ${
+        userUpdated.flash_count
+      } a sus timos. 😞 `
+    )
+  } catch (error) {
+    return interaction.editReply(error.message)
+  } finally {
+    await close_conn()
+  }
 }

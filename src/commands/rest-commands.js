@@ -37,11 +37,11 @@ const commands = [
         choices: [
           {
             name: 'fucked',
-            value: 'fucked_counter',
+            value: 'screwed_up_count',
           },
           {
             name: 'flash',
-            value: 'flash_counter',
+            value: 'flash_count',
           },
         ],
       },
@@ -65,7 +65,7 @@ const commands = [
       },
       {
         type: ApplicationCommandOptionType.Integer,
-        name: 'fucked_count',
+        name: 'screwed_up_count',
         description: 'Set fucked value (0 if not provided)',
         required: false,
       },
@@ -93,6 +93,23 @@ const commands = [
         required: true,
       },
     ],
+  },
+  {
+    name: 'verify',
+    description: 'Verify if user is part of Los Timos role',
+    options: [
+      {
+        type: ApplicationCommandOptionType.Mentionable,
+        name: 'user',
+        description: 'Pick a user to verify',
+        required: true,
+      },
+    ],
+  },
+  {
+    name: 'list',
+    description: 'List all users with existing counter',
+    options: [],
   },
 ]
 

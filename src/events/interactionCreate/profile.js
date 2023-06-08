@@ -1,36 +1,35 @@
 import { EmbedBuilder } from 'discord.js'
-import { closeHelper, conn, connHelper } from '../../db/dbConn.js'
+import { close_conn, start_conn } from '../../db/dbConn.js'
+import { User } from '../../db/schemas/user.js'
 
 export default async (interaction) => {
   const { user } = interaction.options.get('user')
+  if (user.bot) return interaction.reply(`Adding counters to a bot is not allowed.`)
 
   try {
     await interaction.deferReply()
+    await start_conn()
 
-    const db = new conn('./db.sqlite', connHelper)
-
-    db.serialize(() => {
-      return db.get(`SELECT * FROM users WHERE id = ${user.id}`, (err, row) => {
-        if (!row) {
-          db.close(closeHelper)
-          return interaction.editReply(`Not user found. Try \`/create @${user.username}\` or choose another user.`)
-        }
-        // console.log(row.fucked_counter)
-        const embed = new EmbedBuilder()
-          .setTitle(`Profile of ${user.username}`)
-          .addFields({ name: 'Fucked count', value: row.fucked_counter + '', inline: true })
-          .addFields({ name: 'Flashed count', value: row.flash_counter + '', inline: true })
-          .setImage(user.displayAvatarURL())
-          .setColor('DarkGold')
-          .setFooter({
-            text: `Requested by ${interaction.user.username}`,
-            iconURL: interaction.user.displayAvatarURL(),
-          })
-        db.close(closeHelper)
-        return interaction.editReply({ content: user.toString(), embeds: [embed] })
-      })
+    const { user_id, screwed_up_count, flash_count } = await User.findOne({
+      user_id: user.id + '',
     })
+    if (!user_id) return interaction.editReply(`User doesn't exist. Try \`/create\` insead.`)
+
+    const embed = new EmbedBuilder()
+      .setTitle(`Profile of ${user.username}`)
+      .addFields({ name: 'Fucked count', value: screwed_up_count + '', inline: true })
+      .addFields({ name: 'Flashed count', value: flash_count + '', inline: true })
+      .setImage(user.displayAvatarURL())
+      .setColor('DarkGold')
+      .setFooter({
+        text: `Requested by ${interaction.user.username}`,
+        iconURL: interaction.user.displayAvatarURL(),
+      })
+
+    return interaction.editReply({ content: user.toString(), embeds: [embed] })
   } catch (error) {
-    return interaction.editReply('*Error happened*')
+    return interaction.editReply(`*Error happened*: ${error.message}`)
+  } finally {
+    await close_conn()
   }
 }
