@@ -15,6 +15,6 @@ const findOneUpdate = await User.findOneAndUpdate(
   }
 )
 
-// console.log(findOneUpdate)
+console.log(findOneUpdate)
 
 await close_conn()

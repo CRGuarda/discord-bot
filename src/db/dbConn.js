@@ -3,7 +3,9 @@ import mongoose from 'mongoose'
 
 export const start_conn = () =>
   mongoose
-    .connect(process.env.MONGODB_URI)
+    .connect(process.env.MONGODB_URI, {
+      maxIdleTimeMS: 20000,
+    })
     .then(() => console.log(`Connected to database.`))
     .catch((e) => console.log(`Error ocurred:${e}`))
 

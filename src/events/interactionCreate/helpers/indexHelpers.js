@@ -1,6 +1,6 @@
 import 'dotenv/config'
 
-const COOLDOWN = 7 //seconds
+const Cooldown = 7 //seconds of cooldown
 let COOLDOWNS_LIST = []
 
 export const validateInteraction = (interaction) => {
@@ -12,11 +12,11 @@ export const validateInteraction = (interaction) => {
 }
 
 export const isCooldown = (interaction) => {
-  const userId = interaction.user.id
+  const { userId } = interaction.user.id
   const userFoundIndex = COOLDOWNS_LIST.findIndex(({ id }) => id === userId)
   if (userFoundIndex >= 0) {
     const diff = Math.round((new Date() - COOLDOWNS_LIST[userFoundIndex].cd_date) / 1000)
-    if (diff < COOLDOWN) {
+    if (diff < Cooldown) {
       return true
     }
     const newCooldownList = structuredClone(COOLDOWNS_LIST)
@@ -28,9 +28,10 @@ export const isCooldown = (interaction) => {
   return false
 }
 
-export const hasPrefferedRole = async (interaction) => {
+export const hasPreferredRole = async (interaction) => {
   const userModel = interaction.options.get('user')
   if (!userModel) return true
   const member = await interaction.guild.members.fetch(userModel.user.id)
+  console.log({ roles: member._roles, env: process.env.APPROVED_ROL })
   return member._roles.includes(process.env.APPROVED_ROL)
 }

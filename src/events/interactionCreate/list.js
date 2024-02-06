@@ -8,6 +8,8 @@ export default async (interaction) => {
     await start_conn()
 
     const allUsers = await User.find({})
+    if (!allUsers.length) throw new Error('No users found')
+    console.log({ allUsers })
     const embedUsers = await Promise.all(
       allUsers.map(async ({ user_id, username, screwed_up_count, flash_count }) => {
         const guildMember = await interaction.guild.members.fetch(user_id)
@@ -28,5 +30,9 @@ export default async (interaction) => {
     return interaction.editReply({
       embeds: embedUsers,
     })
-  } catch (error) {}
+  } catch (error) {
+    return interaction.editReply(`*Error happened*: ${error.message}`)
+  } finally {
+    await close_conn()
+  }
 }
